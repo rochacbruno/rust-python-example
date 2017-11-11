@@ -1,0 +1,8 @@
+/pyext-myrustlib/target/
+/pyext-myrustlib/**/*.rs.bk
+/pyext-myrustlib/Cargo.lock
+.cache
+.benchmarks
+__pycache__
+myrustlib.so
+/pyext-myrustlib/.gitignore
