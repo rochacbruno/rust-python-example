@@ -37,7 +37,9 @@ I can mention [Milksnake](https://github.com/getsentry/milksnake) created by Arm
 
 > See a complete reference list at the bottom.
 
-For this post I am going to use [Rust Cpython](https://github.com/dgrunwald/rust-cpython) as it is the only one I have tested and found straighforward to use.
+For this post, I am going to use [Rust Cpython](https://github.com/dgrunwald/rust-cpython), it's the only one I have tested, it is compatible with **stable version of Rust** and found it straightforward to use.
+
+> **NOTE**: [PyO3](https://github.com/PyO3/pyo3) is a fork of rust-cpython, comes with many improvements, but works only with the nightly version of Rust, so I prefered to use the stable for this post, anyway the examples here must work also with PyO3.
 
 **Pros:** It is really easy to write Rust functions and import from Python and as you will see by the benchmarks it worth in terms of performance.
 
