@@ -333,12 +333,12 @@ and also on [r/rust](https://www.reddit.com/r/rust/comments/7dctmp/red_hat_devel
 
 The contributions come as [Pull Requests](https://github.com/rochacbruno/rust-python-example/pulls?utf8=%E2%9C%93&q=is%3Apr) and you can send a new if you think the functions can be improved.
 
-Thanks to: [Josh Stone](https://github.com/cuviper) we got a better implementarion for Rust which iterates the string only once.
+Thanks to: [Josh Stone](https://github.com/cuviper) we got a better implementarion for Rust which iterates the string only once and also the Python equivalent.
 
 Thanks to: [Purple Pixie](https://github.com/purple-pixie) we got a Python implementation using `itertools`, however this version is not performing any better, needs improvements.
 
 
-## Rust Iterating only once
+## Iterating only once
 
 ```rust
 fn count_doubles_once(_py: Python, val: &str) -> PyResult<u64> {
@@ -356,6 +356,18 @@ fn count_doubles_once(_py: Python, val: &str) -> PyResult<u64> {
 
     Ok(total)
 }
+```
+
+```python
+def count_doubles_once(val):
+    total = 0
+    chars = iter(val)
+    c1 = next(chars)
+    for c2 in chars:
+        if c1 == c2:
+            total += 1
+        c1 = c2
+    return total
 ```
 
 
@@ -379,16 +391,16 @@ def count_doubles_itertools(val):
 
 
 ```bash
-------------------------------------------------------------------------------------------
-Name (time in us)             Min                    Max                   Mean           
-------------------------------------------------------------------------------------------
-test_rust_once           986.0230 (1.0)       1,525.4950 (1.0)       1,022.6443 (1.0)     
-test_rust              2,555.2160 (2.59)      4,595.0420 (3.01)      2,644.8983 (2.59)    
-test_regex            24,473.8990 (24.82)    28,695.7930 (18.81)    25,108.1975 (24.55)   
-test_pure_python      49,072.3980 (49.77)    51,604.9510 (33.83)    50,063.0567 (48.95)   
-test_itertools        54,488.2730 (55.26)    58,184.7310 (38.14)    55,350.9933 (54.13)   
-------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------
+Name (time in ms)             Min                Max               Mean        
+-------------------------------------------------------------------------------
+test_rust_once             1.0072 (1.0)       1.7659 (1.0)       1.1268 (1.0)  
+test_rust                  2.6228 (2.60)      4.5545 (2.58)      2.9367 (2.61) 
+test_regex                26.0261 (25.84)    32.5899 (18.45)    27.2677 (24.20)
+test_pure_python_once     38.2015 (37.93)    43.9625 (24.90)    39.5838 (35.13)
+test_pure_python          52.4487 (52.07)    59.4220 (33.65)    54.8916 (48.71)
+test_itertools            58.5658 (58.15)    66.0683 (37.41)    60.8705 (54.02)
+-------------------------------------------------------------------------------
 ```
 
 The `new Rust implementation` is **3x better** than the old, but the `python-itertools` version is even slower than the `pure python`

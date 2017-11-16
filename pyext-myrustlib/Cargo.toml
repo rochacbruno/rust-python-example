@@ -10,3 +10,6 @@ crate-type = ["dylib"]
 [dependencies.cpython]
 version = "0.1"
 features = ["extension-module"]
+
+# [dependencies.regex]
+# version = "*"
