@@ -26,8 +26,7 @@ double_re = re.compile(r'(?=(.)\1)')
 
 
 def count_doubles_regex(val):
-    total = len(double_re.findall(val))
-    return total
+    return len(double_re.findall(val))
 
 
 val = ''.join(random.choice(string.ascii_letters) for i in range(1000000))
