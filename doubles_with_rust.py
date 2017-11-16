@@ -1,12 +1,23 @@
 import re
 import string
 import random
+import itertools
 import myrustlib  # <-- Importing Rust Implemented Library
 
 
 def count_doubles(val):
     total = 0
     for c1, c2 in zip(val, val[1:]):
+        if c1 == c2:
+            total += 1
+    return total
+
+
+def count_doubles_itertools(val):
+    c1s, c2s = itertools.tee(val)
+    next(c2s, None)
+    total = 0
+    for c1, c2 in zip(c1s, c2s):
         if c1 == c2:
             total += 1
     return total
@@ -23,15 +34,20 @@ val = ''.join(random.choice(string.ascii_letters) for i in range(1000000))
 
 
 def test_pure_python(benchmark):
-    benchmark(count_doubles, val)
+    print(benchmark(count_doubles, val))
+
+
+def test_itertools(benchmark):
+    print(benchmark(count_doubles_itertools, val))
 
 
 def test_regex(benchmark):
-    benchmark(count_double_regex, val)
+    print(benchmark(count_double_regex, val))
 
 
 def test_rust(benchmark):
-    benchmark(myrustlib.count_doubles, val)
+    print(benchmark(myrustlib.count_doubles, val))
+
 
 def test_rust_once(benchmark):
-    benchmark(myrustlib.count_doubles_once, val)
+    print(benchmark(myrustlib.count_doubles_once, val))

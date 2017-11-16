@@ -110,9 +110,9 @@ Run **pytest** to compare:
 
 ```bash
 $ pytest doubles.py                                                                                                           
-================================================================================= test session starts ==================================================================================
-platform linux -- Python 3.6.0, pytest-3.2.3, py-1.4.34, pluggy-0.4.0
-benchmark: 3.1.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+=============================================================================
+platform linux -- Python 3.6.0, pytest-3.2.3, py-1.4.34, pluggy-0.4.
+benchmark: 3.1.1 (defaults: timer=time.perf_counter disable_gc=False min_roun
 rootdir: /Projects/rustpy, inifile:
 plugins: benchmark-3.1.1
 collected 2 items
@@ -120,24 +120,19 @@ collected 2 items
 doubles.py ..
 
 
---------------------------------------------------------------------------------- benchmark: 2 tests --------------------------------------------------------------------------------
-Name (time in ms)         Min                Max               Mean            StdDev             Median               IQR            Outliers      OPS            Rounds  Iterations
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-test_regex            24.6824 (1.0)      32.3960 (1.0)      27.0167 (1.0)      1.8610 (1.0)      27.2148 (1.0)      2.9345 (4.55)         16;1  37.0141 (1.0)          36           1
-test_pure_python      51.4964 (2.09)     62.5680 (1.93)     52.8334 (1.96)     2.3630 (1.27)     52.2846 (1.92)     0.6444 (1.0)           1;2  18.9274 (0.51)         20           1
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Legend:
-  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
-  OPS: Operations Per Second, computed as 1 / Mean
-=============================================================================== 2 passed in 4.10 seconds ===============================================================================
+-----------------------------------------------------------------------------
+Name (time in ms)         Min                Max               Mean          
+-----------------------------------------------------------------------------
+test_regex            24.6824 (1.0)      32.3960 (1.0)      27.0167 (1.0)    
+test_pure_python      51.4964 (2.09)     62.5680 (1.93)     52.8334 (1.96)   
+-----------------------------------------------------------------------------
 
 ```
 
-Lets take the `Median` for comparison:
+Lets take the `Mean` for comparison:
 
-- **Regexp** - 27.2148    **<-- less is better**
-- **Python Zip** - 52.2846  
+- **Regexp** - 27.0167    **<-- less is better**
+- **Python Zip** - 52.8334  
 
 # Extending Python with Rust
 
@@ -145,7 +140,8 @@ Lets take the `Median` for comparison:
 
 > **crate** is how we call Rust Packages.
 
-Having rust installed (recommended way is https://www.rustup.rs/)
+Having rust installed (recommended way is https://www.rustup.rs/) 
+Rust is also available on Fedora and RHEL [rust-toolset](https://developers.redhat.com/blog/2017/11/01/getting-started-rust-toolset-rhel/)
 
 > I used `rustc 1.21.0`
 
@@ -298,9 +294,9 @@ def test_rust(benchmark):   #  <-- Benchmark the Rust version
 
 ```bash
 $ pytest doubles.py
-================================================================================= test session starts ==================================================================================
-platform linux -- Python 3.6.0, pytest-3.2.3, py-1.4.34, pluggy-0.4.0
-benchmark: 3.1.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+==============================================================================
+platform linux -- Python 3.6.0, pytest-3.2.3, py-1.4.34, pluggy-0.4.
+benchmark: 3.1.1 (defaults: timer=time.perf_counter disable_gc=False min_round
 rootdir: /Projects/rustpy, inifile:
 plugins: benchmark-3.1.1
 collected 3 items
@@ -308,32 +304,98 @@ collected 3 items
 doubles_rust.py ...
 
 
---------------------------------------------------------------------------------- benchmark: 3 tests ---------------------------------------------------------------------------------
-Name (time in ms)         Min                Max               Mean            StdDev             Median               IQR            Outliers       OPS            Rounds  Iterations
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-test_rust              2.5555 (1.0)       2.9296 (1.0)       2.6085 (1.0)      0.0521 (1.0)       2.5935 (1.0)      0.0456 (1.0)         53;23  383.3661 (1.0)         382           1
-test_regex            25.6049 (10.02)    27.2190 (9.29)     25.8876 (9.92)     0.3543 (6.80)     25.7664 (9.93)     0.3020 (6.63)          4;3   38.6285 (0.10)         40           1
-test_pure_python      52.9428 (20.72)    56.3666 (19.24)    53.9732 (20.69)    0.9248 (17.75)    53.6220 (20.68)    1.4899 (32.70)         6;0   18.5277 (0.05)         20           1
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Legend:
-  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
-  OPS: Operations Per Second, computed as 1 / Mean
-=============================================================================== 3 passed in 5.19 seconds ===============================================================================
-
+-----------------------------------------------------------------------------
+Name (time in ms)         Min                Max               Mean          
+-----------------------------------------------------------------------------
+test_rust              2.5555 (1.0)       2.9296 (1.0)       2.6085 (1.0)    
+test_regex            25.6049 (10.02)    27.2190 (9.29)     25.8876 (9.92)   
+test_pure_python      52.9428 (20.72)    56.3666 (19.24)    53.9732 (20.69)  
+-----------------------------------------------------------------------------
 ```
 
-Lets take the `Median` for comparison:
+Lets take the `Mean` for comparison:
 
-- **Rust** - 2.5935    **<-- less is better**
-- **Regexp** - 25.7664
-- **Python Zip** - 53.6220
+- **Rust** - 2.6085    **<-- less is better**
+- **Regexp** - 25.8876
+- **Python Zip** - 53.9732
 
 Rust implementation can be **10x** faster than Python Regex and **21x** faster than Pure Python Version.
 
 > Interesting that **Regex** version is only 2x faster than Pure Python :)
 
 > NOTE: That numbers makes sense only for this particular scenario, for other cases that comparison may be different.
+
+
+# Updates
+
+After this article has been published I got some comments on [r/python](https://www.reddit.com/r/Python/comments/7dct9v/use_rust_to_write_python_modules/)
+and also on [r/rust](https://www.reddit.com/r/rust/comments/7dctmp/red_hat_developers_blog_speed_up_your_python/) 
+
+The contributions come as [Pull Requests](https://github.com/rochacbruno/rust-python-example/pulls?utf8=%E2%9C%93&q=is%3Apr) and you can send a new if you think the functions can be improved.
+
+Thanks to: [Josh Stone](https://github.com/cuviper) we got a better implementarion for Rust which iterates the string only once.
+
+Thanks to: [Purple Pixie](https://github.com/purple-pixie) we got a Python implementation using `itertools`, however this version is not performing any better, needs improvements.
+
+
+## Rust Iterating only once
+
+```rust
+fn count_doubles_once(_py: Python, val: &str) -> PyResult<u64> {
+    let mut total = 0u64;
+
+    let mut chars = val.chars();
+    if let Some(mut c1) = chars.next() {
+        for c2 in chars {
+            if c1 == c2 {
+                total += 1;
+            }
+            c1 = c2;
+        }
+    }
+
+    Ok(total)
+}
+```
+
+
+## Python with Itertools
+
+```python
+import itertools
+
+def count_doubles_itertools(val):
+    c1s, c2s = itertools.tee(val)
+    next(c2s, None)
+    total = 0
+    for c1, c2 in zip(c1s, c2s):
+        if c1 == c2:
+            total += 1
+    return total
+```
+
+## New Results
+
+
+
+```bash
+------------------------------------------------------------------------------------------
+Name (time in us)             Min                    Max                   Mean           
+------------------------------------------------------------------------------------------
+test_rust_once           986.0230 (1.0)       1,525.4950 (1.0)       1,022.6443 (1.0)     
+test_rust              2,555.2160 (2.59)      4,595.0420 (3.01)      2,644.8983 (2.59)    
+test_regex            24,473.8990 (24.82)    28,695.7930 (18.81)    25,108.1975 (24.55)   
+test_pure_python      49,072.3980 (49.77)    51,604.9510 (33.83)    50,063.0567 (48.95)   
+test_itertools        54,488.2730 (55.26)    58,184.7310 (38.14)    55,350.9933 (54.13)   
+------------------------------------------------------------------------------------------
+
+```
+
+The `new Rust implementation` is **3x better** than the old, but the `python-itertools` version is even slower than the `pure python`
+
+
+> NOTE: If you want to propose changes or improvements send a PR here: https://github.com/rochacbruno/rust-python-example/
+
 
 # Conclusion
 
