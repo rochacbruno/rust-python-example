@@ -1,11 +1,13 @@
 import re
 import string
 import random
-
+import itertools
 
 def count_doubles(val):
+    c1s, c2s = itertools.tee(val)
+    next(c2s, None)
     total = 0
-    for c1, c2 in zip(val, val[1:]):
+    for c1, c2 in itertools.izip(c1s, c2s):
         if c1 == c2:
             total += 1
     return total
