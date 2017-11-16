@@ -32,3 +32,6 @@ def test_regex(benchmark):
 
 def test_rust(benchmark):
     benchmark(myrustlib.count_doubles, val)
+
+def test_rust_once(benchmark):
+    benchmark(myrustlib.count_doubles_once, val)
