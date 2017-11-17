@@ -2,7 +2,13 @@ import re
 import string
 import random
 import itertools
+import numpy as np
 import myrustlib  # <-- Importing Rust Implemented Library
+
+import sys
+sys.path.append('./pyext-myclib')
+
+import myclib  # <-- Importing C Implemented Library
 
 
 def count_doubles(val):
@@ -41,6 +47,15 @@ def count_double_regex(val):
     return len(double_re.findall(val))
 
 
+def count_double_numpy(val):
+    ng = np.fromstring(val, dtype=np.byte)
+    return np.sum(ng[:-1] == ng[1:])
+
+
+def count_doubles_comprehension(val):
+    return sum(1 for c1, c2 in zip(val, val[1:]) if c1 == c2)
+
+
 val = ''.join(random.choice(string.ascii_letters) for i in range(1000000))
 
 
@@ -60,12 +75,28 @@ def test_regex(benchmark):
     print(benchmark(count_double_regex, val))
 
 
+def test_numpy(benchmark):
+    print(benchmark(count_double_numpy, val))
+
+
+def test_python_comprehension(benchmark):
+    print(benchmark(count_doubles_comprehension, val))
+
+
 def test_rust(benchmark):
     print(benchmark(myrustlib.count_doubles, val))
 
 
 def test_rust_once(benchmark):
     print(benchmark(myrustlib.count_doubles_once, val))
+
+
+def test_rust_bytes_once(benchmark):
+    print(benchmark(myrustlib.count_doubles_once_bytes, val))
+
+
+def test_c_swig_bytes_once(benchmark):
+    print(benchmark(myclib.count_byte_doubles, val))
 
 
 # def test_rust_regex(benchmark):

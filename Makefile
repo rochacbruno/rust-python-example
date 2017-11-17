@@ -29,6 +29,15 @@ test-python: ## run tests quickly with the default Python
 test-rust: ## run tests quickly with the default Python
 	py.test -v -s doubles_with_rust.py
 
-compile: ## compile new rust lib
+test-c: ## run tests quickly with the default Python
+	py.test -v -s doubles_with_c_swig.py
+
+test-all: ## run tests quickly with the default Python
+	py.test -v -s doubles_all.py
+
+compile-rust: ## compile new rust lib
 	@cd pyext-myrustlib;cargo build --release
 	@cp pyext-myrustlib/target/release/libmyrustlib.so myrustlib.so
+
+compile-c: ## compile new c lib
+	@cd pyext-myclib;python3 setup.py build_ext -i

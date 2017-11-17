@@ -326,7 +326,7 @@ Rust implementation can be **10x** faster than Python Regex and **21x** faster t
 > NOTE: That numbers makes sense only for this particular scenario, for other cases that comparison may be different.
 
 
-# Updates
+# Updates and improvements
 
 After this article has been published I got some comments on [r/python](https://www.reddit.com/r/Python/comments/7dct9v/use_rust_to_write_python_modules/)
 and also on [r/rust](https://www.reddit.com/r/rust/comments/7dctmp/red_hat_developers_blog_speed_up_your_python/) 
@@ -386,30 +386,109 @@ def count_doubles_itertools(val):
     return total
 ```
 
-## New Results
+### Why not C/C++/Nim/Go/Ĺua/PyPy/{other language}?
 
+Ok, that is not the purpose of this post, this post was never about comparing `Rust` X `other language`, this post was specifically about
+**how to use Rust to extend and speed up Python** and by doing that it means you have a good reason to choose Rust instead of `other language`
+or by its ecosystem or by its safety and tooling or just to follow the hype, or simply because you like Rust
+doesn't matter the reason, this post is here to show how to use it with **Python**.
 
+I (personally) may say that Rust is more `future proof` as it is new and there are lots of improvements to come, also because of its ecosystem, tooling and community
+and also because I feel confortable with Rust syntax, I really like it!
 
-```bash
--------------------------------------------------------------------------------
-Name (time in ms)             Min                Max               Mean        
--------------------------------------------------------------------------------
-test_rust_once             1.0072 (1.0)       1.7659 (1.0)       1.1268 (1.0)  
-test_rust                  2.6228 (2.60)      4.5545 (2.58)      2.9367 (2.61) 
-test_regex                26.0261 (25.84)    32.5899 (18.45)    27.2677 (24.20)
-test_pure_python_once     38.2015 (37.93)    43.9625 (24.90)    39.5838 (35.13)
-test_pure_python          52.4487 (52.07)    59.4220 (33.65)    54.8916 (48.71)
-test_itertools            58.5658 (58.15)    66.0683 (37.41)    60.8705 (54.02)
--------------------------------------------------------------------------------
+So, as expected people started complaining about the use of other languages and it becomes a sort of benchmark, and I think it is cool! 
+
+So as part of my request for improvements some people on [Hacker News](https://news.ycombinator.com/item?id=15719254) also sent ideas, [martinxyz](https://github.com/martinxyz) sent an implementaion using
+C and SWIG taht performed very well.
+
+C Code (swig boilerplate ommited)
+
+```c
+uint64_t count_byte_doubles(char * str) {
+  uint64_t count = 0;
+  while (str[0] && str[1]) {
+    if (str[0] == str[1]) count++;
+    str++;
+  }
+  return count;
+}
 ```
 
-The `new Rust implementation` is **3x better** than the old, but the `python-itertools` version is even slower than the `pure python`
+And our fellow Red Hatter [Josh Stone](https://github.com/cuviper) improved the Rust implementation again by replacing `chars` with `bytes` so it is a fair competition with `C` as
+C is comparing bytes instead of unicode chars.
 
+
+```rust
+fn count_doubles_once_bytes(_py: Python, val: &str) -> PyResult<u64> {
+    let mut total = 0u64;
+
+    let mut chars = val.bytes();
+    if let Some(mut c1) = chars.next() {
+        for c2 in chars {
+            if c1 == c2 {
+                total += 1;
+            }
+            c1 = c2;
+        }
+    }
+
+    Ok(total)
+}
+```
+
+There are also ideas to compare Python `list comprehension` and `numpy` so I included here
+
+Numpy:
+
+```python
+import numpy as np
+
+def count_double_numpy(val):
+    ng=np.fromstring(val,dtype=np.byte)
+    return np.sum(ng[:-1]==ng[1:])
+```
+
+List comprehension
+
+```python
+def count_doubles_comprehension(val):
+    return sum(1 for c1, c2 in zip(val, val[1:]) if c1 == c2)
+```
+
+The complete test case is on repository `test_all.py` file.
+
+
+## New Results
+
+```bash
+-------------------------------------------------------------------------------------------------
+Name (time in us)                     Min                    Max                   Mean          
+-------------------------------------------------------------------------------------------------
+test_rust_bytes_once             476.7920 (1.0)         830.5610 (1.0)         486.6116 (1.0)    
+test_c_swig_bytes_once           795.3460 (1.67)      1,504.3380 (1.81)        827.3898 (1.70)   
+test_rust_once                   985.9520 (2.07)      1,483.8120 (1.79)      1,017.4251 (2.09)   
+test_numpy                     1,001.3880 (2.10)      2,461.1200 (2.96)      1,274.8132 (2.62)   
+test_rust                      2,555.0810 (5.36)      3,066.0430 (3.69)      2,609.7403 (5.36)   
+test_regex                    24,787.0670 (51.99)    26,513.1520 (31.92)    25,333.8143 (52.06)  
+test_pure_python_once         36,447.0790 (76.44)    48,596.5340 (58.51)    38,074.5863 (78.24)  
+test_python_comprehension     49,166.0560 (103.12)   50,832.1220 (61.20)    49,699.2122 (102.13) 
+test_pure_python              49,586.3750 (104.00)   50,697.3780 (61.04)    50,148.6596 (103.06) 
+test_itertools                56,762.8920 (119.05)   69,660.0200 (83.87)    58,402.9442 (120.02) 
+-------------------------------------------------------------------------------------------------
+
+```
+
+- The `new Rust implementation comparing bytes` is **2x better** than the old comparing unicode `chars`
+- The `Rust` version is still better than the `C` using SWIG
+- `Rust` comparing `unicode chars` is still better than `numpy`
+- However `Numpy` is better than the `first Rust implementation` which had the problem of **double iteration over the unicode chars**
+- Using a `list comprehension` does not make significative difference than using `pure Python`
 
 > NOTE: If you want to propose changes or improvements send a PR here: https://github.com/rochacbruno/rust-python-example/
 
-
 # Conclusion
+
+`Rust` will not magically save you, you must know the language to be able to implement the clever solution and once implemented in the right it worth as much as C in terms of performance and also comes with amazing tooling, ecosystem, community and safety bonuses. 
 
 `Rust` may not be **yet** the `general purpose language` of choice by its level of complexity and may not be the better choice **yet** to write common simple `applications` such as `web` sites and `test automation` scripts.
 

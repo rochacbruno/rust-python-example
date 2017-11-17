@@ -4,6 +4,11 @@ import random
 import itertools
 import myrustlib  # <-- Importing Rust Implemented Library
 
+import sys
+sys.path.append('./pyext-myclib')
+
+import myclib  # <-- Importing C Implemented Library
+
 
 def count_doubles(val):
     total = 0
@@ -66,6 +71,10 @@ def test_rust(benchmark):
 
 def test_rust_once(benchmark):
     print(benchmark(myrustlib.count_doubles_once, val))
+
+
+def test_c_bytes_once(benchmark):
+    print(benchmark(myclib.count_byte_doubles, val))
 
 
 # def test_rust_regex(benchmark):
