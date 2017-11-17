@@ -488,6 +488,14 @@ test_itertools                56,762.8920 (119.05)   69,660.0200 (83.87)    58,4
 
 # Conclusion
 
+Back to the purpose of this post "How to Speed Up your Python with Rust" we started with:
+
+- **Pure Python** function taking **102 ms**.
+- Improved with **Numpy** (which is implemented in C) to take **3 ms**.
+- Ended with **Rust** taking **1 ms**.
+
+In this example **Rust** performed **100x** faster than our **Pure Python**.
+
 `Rust` will not magically save you, you must know the language to be able to implement the clever solution and once implemented in the right it worth as much as C in terms of performance and also comes with amazing tooling, ecosystem, community and safety bonuses. 
 
 `Rust` may not be **yet** the `general purpose language` of choice by its level of complexity and may not be the better choice **yet** to write common simple `applications` such as `web` sites and `test automation` scripts.
