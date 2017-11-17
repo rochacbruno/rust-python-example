@@ -1,6 +1,10 @@
 /pyext-myrustlib/target/
 /pyext-myrustlib/**/*.rs.bk
 /pyext-myrustlib/Cargo.lock
+/pyext-myclib/build/
+/pyext-myclib/myclib.py
+/pyext-myclib/myclib_wrap.c
+/pyext-myclib/_myclib.cpython*
 .cache
 .benchmarks
 __pycache__
