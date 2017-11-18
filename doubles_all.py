@@ -9,6 +9,18 @@ import sys
 sys.path.append('./pyext-myclib')
 
 import myclib  # <-- Importing C Implemented Library
+from numba import jit
+
+@jit(nopython=True, cache=True)
+def count_doubles_once_numba(val):
+    total = 0
+    chars = iter(val)
+    c1 = next(chars)
+    for c2 in chars:
+        if c1 == c2:
+            total += 1
+        c1 = c2
+    return total
 
 
 def count_doubles(val):
@@ -52,6 +64,11 @@ def count_double_numpy(val):
     return np.sum(ng[:-1] == ng[1:])
 
 
+@jit(nopython=True, cache=True)
+def count_double_numpy_numba(ng):
+    return np.sum(ng[:-1] == ng[1:])
+
+
 def count_doubles_comprehension(val):
     return sum(1 for c1, c2 in zip(val, val[1:]) if c1 == c2)
 
@@ -67,6 +84,10 @@ def test_pure_python_once(benchmark):
     print(benchmark(count_doubles_once, val))
 
 
+def test_pure_python_once_numba(benchmark):
+    print(benchmark(count_doubles_once_numba, val.encode()))
+
+
 def test_itertools(benchmark):
     print(benchmark(count_doubles_itertools, val))
 
@@ -77,6 +98,11 @@ def test_regex(benchmark):
 
 def test_numpy(benchmark):
     print(benchmark(count_double_numpy, val))
+
+
+def test_numpy_numba(benchmark):
+    ng = np.fromstring(val, dtype=np.byte)
+    print(benchmark(count_double_numpy_numba, ng))
 
 
 def test_python_comprehension(benchmark):
