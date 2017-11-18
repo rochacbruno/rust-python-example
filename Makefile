@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help
+.PHONY: clean clean-test clean-pyc clean-build docs help test-python test-rust test-c test-cython compile-cython compile-rust compile-c
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -6,6 +6,7 @@ clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
+	rm -fr .compiled
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
@@ -32,6 +33,9 @@ test-rust: ## run tests quickly with the default Python
 test-c: ## run tests quickly with the default Python
 	py.test -v -s doubles_with_c_swig.py
 
+test-cython: # run tests quickly with the default Python
+	py.test -v -s doubles_with_cython.py
+
 test-all: ## run tests quickly with the default Python
 	py.test -v -s doubles_all.py
 
@@ -41,3 +45,14 @@ compile-rust: ## compile new rust lib
 
 compile-c: ## compile new c lib
 	@cd pyext-myclib;python3 setup.py build_ext -i
+
+compile-cython: ## compile new cython lib
+	@cd pyext-mycythonlib;cythonize -a -i mycythonlib.pyx
+	@cp pyext-mycythonlib/mycythonlib*.so ./
+
+compile-all: compile-rust compile-c compile-cython
+
+.compiled: compile-all
+	touch .compiled
+
+test: compile-all test-all
