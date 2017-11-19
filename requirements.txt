@@ -1,3 +1,4 @@
 pytest
 pytest-benchmark
 numpy
+cython

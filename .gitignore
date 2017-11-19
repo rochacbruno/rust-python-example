@@ -5,8 +5,12 @@
 /pyext-myclib/myclib.py
 /pyext-myclib/myclib_wrap.c
 /pyext-myclib/_myclib.cpython*
+/pyext-mycythonlib/*.so
+/pyext-mycythonlib/*.c
+/pyext-mycythonlib/*.html
 .cache
 .benchmarks
 __pycache__
 myrustlib.so
+mycythonlib*.so
 /pyext-myrustlib/.gitignore
