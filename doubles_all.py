@@ -4,6 +4,7 @@ import random
 import itertools
 import numpy as np
 import myrustlib  # <-- Importing Rust Implemented Library
+import mycythonlib # <-- Importing Cython Implemented Library
 
 import sys
 sys.path.append('./pyext-myclib')
@@ -101,3 +102,6 @@ def test_c_swig_bytes_once(benchmark):
 
 # def test_rust_regex(benchmark):
 #     print(benchmark(myrustlib.count_doubles_regex, val))
+
+def test_cython(benchmark):
+    print(benchmark(mycythonlib.count_doubles, val))
