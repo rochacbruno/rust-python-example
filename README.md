@@ -486,13 +486,58 @@ test_itertools                56,762.8920 (119.05)   69,660.0200 (83.87)    58,4
 
 > NOTE: If you want to propose changes or improvements send a PR here: https://github.com/rochacbruno/rust-python-example/
 
+
+I received more contributions as Pull Requests one of then was by [Jason Knight](https://github.com/binarybana) to improve `Rust` using 
+
+```bash
+RUSTFLAGS="-C target-cpu=native" cargo build --release
+```
+
+And for those who were curious about a comparison with `numba` so [Shyba](https://github.com/shyba) implemented it and it is available in the numba branch https://github.com/rochacbruno/rust-python-example/tree/numba.
+
+```python
+from numba import jit
+
+@jit(nopython=True, cache=True)
+def count_doubles_once_numba(val):
+    total = 0
+    chars = iter(val)
+    c1 = next(chars)
+    for c2 in chars:
+        if c1 == c2:
+            total += 1
+        c1 = c2
+    return total
+```
+
+Look the new results with **numba** at the top, pretty close to **Rust**
+
+```bash
+----------------------------------------------------------------------------------------------------
+Name (time in us)                       Min                    Max                   Mean           
+----------------------------------------------------------------------------------------------------
+test_pure_python_once_numba        292.0990 (1.0)         317.7590 (1.0)         296.7477 (1.0)     
+test_numpy_numba                   326.2470 (1.12)        526.1350 (1.66)        338.1704 (1.14)    
+test_rust_bytes_once               336.0620 (1.15)      1,053.0090 (3.31)        342.5122 (1.15)    
+test_c_swig_bytes_once             375.6310 (1.29)      1,389.9070 (4.37)        388.9181 (1.31)    
+test_rust_once                     986.0360 (3.38)      2,498.5850 (7.86)      1,006.5819 (3.39)    
+test_numpy                       1,137.1750 (3.89)      2,000.5430 (6.30)      1,167.2551 (3.93)    
+test_rust                        2,555.1400 (8.75)      3,645.3900 (11.47)     2,592.0419 (8.73)    
+test_regex                      22,597.1750 (77.36)    25,027.2820 (78.76)    22,851.8456 (77.01)   
+test_pure_python_once           32,418.8830 (110.99)   34,818.0800 (109.57)   32,756.3244 (110.38)  
+test_pure_python                43,823.5140 (150.03)   45,961.8460 (144.64)   44,367.1028 (149.51)  
+test_python_comprehension       46,360.1640 (158.71)   50,578.1740 (159.17)   46,986.8058 (158.34)  
+test_itertools                  49,080.8640 (168.03)   51,016.5230 (160.55)   49,405.2562 (166.49)  
+----------------------------------------------------------------------------------------------------
+```
+
 # Conclusion
 
 Back to the purpose of this post "How to Speed Up your Python with Rust" we started with:
 
 - **Pure Python** function taking **102 ms**.
 - Improved with **Numpy** (which is implemented in C) to take **3 ms**.
-- Ended with **Rust** taking **1 ms**.
+- Ended with **Rust** taking **1 ms** (just like numba version).
 
 In this example **Rust** performed **100x** faster than our **Pure Python**.
 
