@@ -531,13 +531,29 @@ test_itertools                  49,080.8640 (168.03)   51,016.5230 (160.55)   49
 ----------------------------------------------------------------------------------------------------
 ```
 
+And there is also a **Cython** implementation by [MIke Fletcher](https://github.com/mcfletch) in the branch `cython` https://github.com/rochacbruno/rust-python-example/tree/cython 
+
+with the results:
+
+
+```bash
+----------------------------------------------------------------------------------------------------
+Name (time in us)                       Min                    Max                   Mean           
+----------------------------------------------------------------------------------------------------
+test_rust_bytes_once             336.7590 (1.0)         806.2610 (1.0)         346.5317 (1.0)       
+test_cython                      756.1610 (2.25)      2,343.3680 (2.91)        785.6455 (2.27)      
+test_c_swig_bytes_once           802.4250 (2.38)      1,632.4290 (2.02)        840.8603 (2.43)      
+----------------------------------------------------------------------------------------------------
+```
+
+
 # Conclusion
 
-Back to the purpose of this post "How to Speed Up your Python with Rust" we started with:
+Back to the purpose of this post **How to Speed Up your Python with Rust** we started with:
 
-- **Pure Python** function taking **102 ms**.
-- Improved with **Numpy** (which is implemented in C) to take **3 ms**.
-- Ended with **Rust** taking **1 ms** (just like numba version).
+- **Pure Python** function taking **102 **.
+- Improved with **Numpy** (which is implemented in C) to take **3**.
+- Ended with **Rust** taking **1** (just like numba version).
 
 In this example **Rust** performed **100x** faster than our **Pure Python**.
 
