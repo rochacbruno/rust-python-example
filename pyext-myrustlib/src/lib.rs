@@ -1,8 +1,6 @@
 #[macro_use] extern crate cpython;
-// extern crate regex;
 
 use cpython::{Python, PyResult};
-// use regex::Regex;
 use std::mem;
 
 fn count_doubles(_py: Python, val: &str) -> PyResult<u64> {
