@@ -394,7 +394,7 @@ or by its ecosystem or by its safety and tooling or just to follow the hype, or 
 doesn't matter the reason, this post is here to show how to use it with **Python**.
 
 I (personally) may say that Rust is more `future proof` as it is new and there are lots of improvements to come, also because of its ecosystem, tooling and community
-and also because I feel confortable with Rust syntax, I really like it!
+and also because I feel comfortable with Rust syntax, I really like it!
 
 So, as expected people started complaining about the use of other languages and it becomes a sort of benchmark, and I think it is cool! 
 
