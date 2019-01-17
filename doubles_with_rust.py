@@ -79,6 +79,8 @@ def test_rust_memreplace(benchmark):
 def test_rust_fold(benchmark):
     print(benchmark(myrustlib.count_doubles_fold, val))
 
+def test_rust_slice(benchmark):
+    print(benchmark(myrustlib.count_doubles_slice, val))
 
 # def test_rust_regex(benchmark):
 #     print(benchmark(myrustlib.count_doubles_regex, val))
