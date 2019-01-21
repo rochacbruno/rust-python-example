@@ -399,7 +399,7 @@ and also because I feel comfortable with Rust syntax, I really like it!
 So, as expected people started complaining about the use of other languages and it becomes a sort of benchmark, and I think it is cool! 
 
 So as part of my request for improvements some people on [Hacker News](https://news.ycombinator.com/item?id=15719254) also sent ideas, [martinxyz](https://github.com/martinxyz) sent an implementaion using
-C and SWIG taht performed very well.
+C and SWIG that performed very well.
 
 C Code (swig boilerplate ommited)
 
