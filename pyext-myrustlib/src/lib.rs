@@ -95,6 +95,11 @@ fn count_doubles_once_bytes(_py: Python, val: &str) -> PyResult<u64> {
     Ok(total)
 }
 
+fn count_doubles_slice(_py: Python, val: &str) -> PyResult<u64> {
+    let count = val.as_bytes().windows(2).filter(|slice| slice[0] == slice[1]).count();
+    Ok(count as u64)
+}
+
 
 // Rust Gegex crate does not support lokkaround/backreference
 // https://github.com/rust-lang/regex/issues/302
@@ -113,6 +118,7 @@ py_module_initializer!(libmyrustlib, initlibmyrustlib, PyInit_myrustlib, |py, m 
     try!(m.add(py, "count_doubles_peek", py_fn!(py, count_doubles_peek(val: &str))));
     try!(m.add(py, "count_doubles_memreplace", py_fn!(py, count_doubles_memreplace(val: &str))));
     try!(m.add(py, "count_doubles_fold", py_fn!(py, count_doubles_fold(val: &str))));
+    try!(m.add(py, "count_doubles_slice", py_fn!(py, count_doubles_slice(val: &str))));
     // try!(m.add(py, "count_doubles_regex", py_fn!(py, count_doubles_regex(val: &str))));
     Ok(())
 });
