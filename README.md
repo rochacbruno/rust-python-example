@@ -149,7 +149,7 @@ Rust is also available on Fedora and RHEL [rust-toolset](https://developers.redh
 In the same folder run:
 
 ```bash
-cargo new pyext-myrustlib
+cargo new pyext-myrustlib --lib
 ```
 
 It creates a new Rust project in that same folder called `pyext-myrustlib` containing the `Cargo.toml` (cargo is the Rust package manager) and also a `src/lib.rs` (where we write our library implementation)
