@@ -111,14 +111,14 @@ fn count_doubles_slice(_py: Python, val: &str) -> PyResult<u64> {
 
 
 py_module_initializer!(libmyrustlib, initlibmyrustlib, PyInit_myrustlib, |py, m | {
-    try!(m.add(py, "__doc__", "This module is implemented in Rust"));
-    try!(m.add(py, "count_doubles", py_fn!(py, count_doubles(val: &str))));
-    try!(m.add(py, "count_doubles_once", py_fn!(py, count_doubles_once(val: &str))));
-    try!(m.add(py, "count_doubles_once_bytes", py_fn!(py, count_doubles_once_bytes(val: &str))));
-    try!(m.add(py, "count_doubles_peek", py_fn!(py, count_doubles_peek(val: &str))));
-    try!(m.add(py, "count_doubles_memreplace", py_fn!(py, count_doubles_memreplace(val: &str))));
-    try!(m.add(py, "count_doubles_fold", py_fn!(py, count_doubles_fold(val: &str))));
-    try!(m.add(py, "count_doubles_slice", py_fn!(py, count_doubles_slice(val: &str))));
+    m.add(py, "__doc__", "This module is implemented in Rust")?;
+    m.add(py, "count_doubles", py_fn!(py, count_doubles(val: &str)))?;
+    m.add(py, "count_doubles_once", py_fn!(py, count_doubles_once(val: &str)))?;
+    m.add(py, "count_doubles_once_bytes", py_fn!(py, count_doubles_once_bytes(val: &str)))?;
+    m.add(py, "count_doubles_peek", py_fn!(py, count_doubles_peek(val: &str)))?;
+    m.add(py, "count_doubles_memreplace", py_fn!(py, count_doubles_memreplace(val: &str)))?;
+    m.add(py, "count_doubles_fold", py_fn!(py, count_doubles_fold(val: &str)))?;
+    m.add(py, "count_doubles_slice", py_fn!(py, count_doubles_slice(val: &str)))?;
     // try!(m.add(py, "count_doubles_regex", py_fn!(py, count_doubles_regex(val: &str))));
     Ok(())
 });
