@@ -41,6 +41,7 @@ compile-rust: ## compile new rust lib
 
 compile-cmodule: ## compile new c module
 	@cd pyext-mycmodule;python3 setup.py build_ext -i
+	@cp pyext-mycmodule/mycmodule*.so mycmodule.so
 
 compile-c: ## compile new c lib
 	@cd pyext-myclib;python3 setup.py build_ext -i

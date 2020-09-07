@@ -9,9 +9,13 @@ uint64_t count_byte_doubles(const char * const data, const uint64_t size) {
 }
 
 PyObject * mycmodule_meth_count_doubles(PyObject * self, PyObject * arg) {
-    Py_ssize_t size;
-    PyUnicode_AsUTF8AndSize(arg, &size);
-    return PyLong_FromUnsignedLongLong(count_byte_doubles(PyUnicode_AsUTF8(arg), size));
+    if (!PyUnicode_Check(arg)) {
+        PyErr_BadArgument();
+        return NULL;
+    }
+    Py_ssize_t size = 0;
+    const char * data = PyUnicode_AsUTF8AndSize(arg, &size);
+    return PyLong_FromUnsignedLongLong(count_byte_doubles(data, size));
 }
 
 PyMethodDef module_methods[] = {
