@@ -39,5 +39,8 @@ compile-rust: ## compile new rust lib
 	@cd pyext-myrustlib;RUSTFLAGS="-C target-cpu=native" cargo build --release
 	@cp pyext-myrustlib/target/release/libmyrustlib.so myrustlib.so
 
+compile-cmodule: ## compile new c module
+	@cd pyext-mycmodule;python3 setup.py build_ext -i
+
 compile-c: ## compile new c lib
 	@cd pyext-myclib;python3 setup.py build_ext -i

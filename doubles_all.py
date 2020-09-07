@@ -9,6 +9,7 @@ import sys
 sys.path.append('./pyext-myclib')
 
 import myclib  # <-- Importing C Implemented Library
+import mycmodule  # <-- Importing C Module
 
 
 def count_doubles(val):
@@ -97,6 +98,10 @@ def test_rust_bytes_once(benchmark):
 
 def test_c_swig_bytes_once(benchmark):
     print(benchmark(myclib.count_byte_doubles, val))
+
+
+def test_c_module_once(benchmark):
+    print(benchmark(mycmodule.count_doubles, val))
 
 
 # def test_rust_regex(benchmark):
