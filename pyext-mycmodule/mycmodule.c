@@ -20,12 +20,12 @@ PyObject * mycmodule_meth_count_doubles(PyObject * self, PyObject * arg) {
 
 PyMethodDef module_methods[] = {
     {"count_doubles", (PyCFunction)mycmodule_meth_count_doubles, METH_O, NULL},
-    {},
+    {NULL, NULL, 0, NULL},
 };
 
 PyModuleDef module_def = {PyModuleDef_HEAD_INIT, "mycmodule", NULL, -1, module_methods};
 
-extern "C" PyObject * PyInit_mycmodule() {
+extern PyObject * PyInit_mycmodule() {
     PyObject * module = PyModule_Create(&module_def);
     return module;
 }

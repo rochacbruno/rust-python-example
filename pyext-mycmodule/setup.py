@@ -2,7 +2,7 @@ from setuptools import Extension, setup
 
 ext = Extension(
     name='mycmodule',
-    sources=['./mycmodule.cpp'],
+    sources=['./mycmodule.c'],
     extra_compile_args=['-fpermissive'],
 )
 
