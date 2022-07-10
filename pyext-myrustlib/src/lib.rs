@@ -40,7 +40,7 @@ fn count_doubles_memreplace(_py: Python, val: &str) -> PyResult<u64> {
             if c1 == c2 {
                 total += 1;
             }
-            mem::replace(&mut c1, c2);
+            let _ = mem::replace(&mut c1, c2);
         }
     }
 
