@@ -37,7 +37,6 @@ test-all: ## run tests quickly with the default Python
 
 compile-rust: ## compile new rust lib
 	@cd pyext-myrustlib;RUSTFLAGS="-C target-cpu=native" cargo build --release
-	@cp pyext-myrustlib/target/release/libmyrustlib.so myrustlib.so
 
 compile-c: ## compile new c lib
 	@cd pyext-myclib;python3 setup.py build_ext -i
